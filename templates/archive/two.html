@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- INSTALLATIONS -->
+    <!-- flowbite -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css" rel="stylesheet" />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ICONIFY -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+    <!-- VUE 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.6/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+        .content-auto {
+        content-visibility: auto;
+        }
+    }
+    </style>
+
+</head>
+<body>
+    <!-- <div>
+        <canvas id="myChart"></canvas>
+      </div> -->
+
+      <div id="app">
+
+
+
+<!-- Snippet -->
+<section class="flex flex-col justify-center antialiased bg-gray-100 text-gray-600 min-h-screen">
+    <div class="max-w-3xl mx-auto p-4 sm:px-6 h-full">
+        <!-- Chart widget -->
+        <div class="flex flex-col col-span-full xl:col-span-8 bg-white shadow-lg rounded-sm border border-gray-200">
+            <header class="px-5 py-4 border-b border-gray-100 flex items-center">
+                <h2 class="font-semibold text-gray-800">Analytics</h2>
+            </header>
+            <div class="px-5 py-1">
+                <div class="flex flex-wrap">
+                    <!-- Unique Visitors -->
+                    <div class="flex items-center py-2">
+                        <div class="mr-5">
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold text-gray-800 mr-2">24.7K</div>
+                                <div class="text-sm font-medium text-green-500">+49%</div>
+                            </div>
+                            <div class="text-sm text-gray-500">Average Temperature</div>
+                        </div>
+                        <div class="hidden md:block w-px h-8 bg-gray-200 mr-5" aria-hidden="true"></div>
+                    </div>
+                    <!-- Total Pageviews -->
+                    <div class="flex items-center py-2">
+                        <div class="mr-5">
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold text-gray-800 mr-2">56.9K</div>
+                                <div class="text-sm font-medium text-green-500">+7%</div>
+                            </div>
+                            <div class="text-sm text-gray-500">Min Temperature</div>
+                        </div>
+                        <div class="hidden md:block w-px h-8 bg-gray-200 mr-5" aria-hidden="true"></div>
+                    </div>
+                    <!-- Bounce Rate -->
+                    <div class="flex items-center py-2">
+                        <div class="mr-5">
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold text-gray-800 mr-2">54%</div>
+                                <div class="text-sm font-medium text-yellow-500">-7%</div>
+                            </div>
+                            <div class="text-sm text-gray-500">Max Temperature</div>
+                        </div>
+                        <div class="hidden md:block w-px h-8 bg-gray-200 mr-5" aria-hidden="true"></div>
+                    </div>
+                    <!-- Visit Duration-->
+                    <div class="flex items-center">
+                        <div>
+                            <div class="flex items-center">
+                                <div class="text-3xl font-bold text-gray-800 mr-2">2m 56s</div>
+                                <div class="text-sm font-medium text-yellow-500">+7%</div>
+                            </div>
+                            <div class="text-sm text-gray-500">Other factors</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Chart built with Chart.js 3 -->
+            <!-- <div class="flex-grow">
+                <canvas id="analytics-card-01" width="800" height="300"></canvas>
+            </div> -->
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <!-- end of Chart widget -->
+    </div>
+</section>
+
+<!-- More components -->
+<div x-show="open" class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60" x-data="{ open: true }">
+    <div class="bg-gray-800 text-gray-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
+        <div>👉 <a class="hover:underline ml-1" href="https://cruip.com/mosaic/?ref=codepen-cruip-analytics" target="_blank">More components on Cruip.com</a></div>
+        <button class="text-gray-500 hover:text-gray-400 ml-5" @click="open = false">
+            <span class="sr-only">Close</span>
+            <svg class="w-4 h-4 flex-shrink-0 fill-current" viewBox="0 0 16 16">
+                <path d="M12.72 3.293a1 1 0 00-1.415 0L8.012 6.586 4.72 3.293a1 1 0 00-1.414 1.414L6.598 8l-3.293 3.293a1 1 0 101.414 1.414l3.293-3.293 3.293 3.293a1 1 0 001.414-1.414L9.426 8l3.293-3.293a1 1 0 000-1.414z" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- <table id="online example">
+    <tr>
+      <th>Type</th>
+      <th>Timestamp</th>
+      <th>Value</th>
+    </tr>
+    <tr v-for="item in dataset.slice(dataset.length - 5, dataset.length)" :key="item.timestamp">
+      <td>[[item.type]]</td>
+      <td>[[item.timestamp]]</td>
+      <td>[[item.value]]</td>
+    </tr>
+  </table> -->
+
+
+</div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+
+
+function mockDataSource(typesSet) {
+  const dataset = []
+
+  const timer = setInterval(() => {
+    const randomType = typesSet[Math.round(Math.random() * (typesSet.length - 1))]
+
+    dataset.push({
+      type: randomType,
+      timestamp: Date.now(),
+      value: Math.random().toString(32).substr(2)
+    })
+  }, 1e3)
+
+  return {
+    dataset,
+    stop() {
+      clearInterval(timer)
+    }
+  }
+}
+
+const dataSource = mockDataSource(Array(10).fill(1).map((_, i) => `type${i + 1}`))
+
+
+
+
+const vm = new Vue({
+
+    el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            dataset: dataSource.dataset,
+            personal_details_fields: [],
+            fields_display: [],
+            personal_details_datas: [],
+            employee_id_values: [],
+            programme_values: [],
+            file: "",
+            profile_data_original: [],
+            profile_data: [],
+            val: " ",
+            contact_details: [],
+            employer_details: []
+        },
+        mounted: async function () {
+            const API_URL_1 = 'http://127.0.0.1:5011/data';
+
+            const apiCalls = [
+                axios.get(API_URL_1),
+                // axios.get(API_URL_2),
+            ];
+            data = []
+            await Promise.all(apiCalls)
+                .then(responses => {
+                    // console.log(responses[0].data.data.x)
+                    data.push(responses[0].data.data.x)
+                    data.push(responses[0].data.data.y)
+
+                }).catch(error => {
+                    console.error(error);
+                });
+
+            console.log("data", data)
+            const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            // labels: [1,2,3,4,5,6, 7],
+            labels: data[0],
+            datasets: [{
+    label: 'My First Dataset',
+    // data: [65, 59, 80, 81, 56, 55, 40],
+    data: data[1],
+    fill: false,
+    borderColor: 'rgb(75, 192, 192)',
+    tension: 0.1
+  }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+
+        }})
+        
+      </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>

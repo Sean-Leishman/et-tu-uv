@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- INSTALLATIONS -->
+    <!-- flowbite -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.css" rel="stylesheet" />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ICONIFY -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+    <!-- VUE 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.6/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+        .content-auto {
+        content-visibility: auto;
+        }
+    }
+    </style>
+
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+
+const vm = new Vue({
+
+    el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            personal_details_fields: [],
+            fields_display: [],
+            personal_details_datas: [],
+            employee_id_values: [],
+            programme_values: [],
+            file: "",
+            profile_data_original: [],
+            profile_data: [],
+            val: " ",
+            contact_details: [],
+            employer_details: []
+        },
+        mounted: async function () {
+            const API_URL_1 = 'http://127.0.0.1:5011/profile/M65889A';
+
+            const apiCalls = [
+                axios.get(API_URL_1),
+                // axios.get(API_URL_2),
+            ];
+
+            await Promise.all(apiCalls)
+                .then(responses => {
+                    personalProfile = responses[0].data
+
+                }).catch(error => {
+                    console.error(error);
+                });
+
+            
+            const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+
+        }})
+        
+      </script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>
